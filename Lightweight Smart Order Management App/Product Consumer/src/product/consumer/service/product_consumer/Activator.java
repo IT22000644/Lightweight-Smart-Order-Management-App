@@ -10,7 +10,7 @@ import product.consumer.service.ProductConsumer;
 public class Activator implements BundleActivator {
 
     private static BundleContext context;
-    private ProductConsumer productConsumer;  // Instance of ProductConsumer to invoke its logic
+    private ProductConsumer productConsumer;  
 
     static BundleContext getContext() {
         return context;
@@ -20,7 +20,7 @@ public class Activator implements BundleActivator {
     public void start(BundleContext bundleContext) throws Exception {
         Activator.context = bundleContext;
 
-        // Create an instance of ProductConsumer
+        // Creating an Instance of ProductConsumer
         productConsumer = new ProductConsumer();
 
         // Reference the ProductServiceImpl using the OSGi service reference
@@ -28,9 +28,9 @@ public class Activator implements BundleActivator {
         if (serviceReference != null) {
             ProductServiceImpl productService = context.getService(serviceReference);
             
-            // Inject the service and run the consumer logic
+            
             if (productService != null) {
-                productConsumer.start(bundleContext);  // Call the start method of ProductConsumer to simulate consuming the service
+                productConsumer.start(bundleContext);  
             }
         } else {
             System.out.println("No Product Service found!");
@@ -39,7 +39,6 @@ public class Activator implements BundleActivator {
 
     @Override
     public void stop(BundleContext bundleContext) throws Exception {
-        // Stop the ProductConsumer logic (clean up if necessary)
         if (productConsumer != null) {
             productConsumer.stop(bundleContext);
         }
