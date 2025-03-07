@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: TaxProducer
+Bundle-SymbolicName: tax.producer.service.TaxProducer
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: tax.producer.service.taxproducer.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Automatic-Module-Name: tax.producer.service.TaxProducer
+Import-Package: org.osgi.framework;version="1.3.0"
+Bundle-ActivationPolicy: lazy
