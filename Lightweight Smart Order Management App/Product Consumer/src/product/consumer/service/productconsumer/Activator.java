@@ -3,45 +3,39 @@ package product.consumer.service.productconsumer;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
+import org.osgi.framework.ServiceRegistration;
 
-import product.producer.service.productproducer.ProductServiceImpl;
-
+import product.producer.service.productproducer.ProductProducer;
 
 public class Activator implements BundleActivator {
 
-    private static BundleContext context;
-    private ProductConsumer productConsumer;  
-
-    static BundleContext getContext() {
-        return context;
-    }
+    private ServiceRegistration<ProductService> serviceRegistration;
+    private ServiceReference<ProductProducer> productProducerRef;
 
     @Override
-    public void start(BundleContext bundleContext) throws Exception {
-        Activator.context = bundleContext;
+    public void start(BundleContext context) throws Exception {
+        System.out.println("Starting Product Consumer...");
 
-        // Creating an Instance of ProductConsumer
-        productConsumer = new ProductConsumer();
+        productProducerRef = context.getServiceReference(ProductProducer.class);
 
-        // Reference the ProductServiceImpl using the OSGi service reference
-        ServiceReference<ProductServiceImpl> serviceReference = context.getServiceReference(ProductServiceImpl.class);
-        if (serviceReference != null) {
-            ProductServiceImpl productService = context.getService(serviceReference);
-            
-            
-            if (productService != null) {
-                productConsumer.start(bundleContext);  
-            }
+        if (productProducerRef != null) {
+            ProductProducer productProducer = context.getService(productProducerRef);
+            ProductService productService = new ProductServiceImpl(productProducer);
+
+            serviceRegistration = context.registerService(ProductService.class, productService, null);
+
+            System.out.println("Product Consumer Service Registered!");
         } else {
-            System.out.println("No Product Service found!");
+            System.out.println("Product Producer Service not available!");
         }
     }
 
     @Override
-    public void stop(BundleContext bundleContext) throws Exception {
-        if (productConsumer != null) {
-            productConsumer.stop(bundleContext);
+    public void stop(BundleContext context) throws Exception {
+        if (serviceRegistration != null) {
+            serviceRegistration.unregister();
         }
-        Activator.context = null;
+
+        System.out.println("Product Consumer Bundle Stopped!");
     }
 }

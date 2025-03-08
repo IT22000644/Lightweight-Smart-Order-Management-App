@@ -8,5 +8,6 @@ Bundle-Vendor: ORDERMANAGEMENT
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: com.ordermanagement.MainApp
 Import-Package: order.consumer.service.orderconsumer,
- org.osgi.framework;version="[1.10.0,2.0.0)"
+ org.osgi.framework;version="[1.10.0,2.0.0)",
+ product.consumer.service.productconsumer
 Bundle-ActivationPolicy: lazy

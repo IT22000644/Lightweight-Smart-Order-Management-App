@@ -7,12 +7,16 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
 import order.consumer.service.orderconsumer.OrderService;
+import product.consumer.service.productconsumer.ProductService;
 
 
 public class Activator implements BundleActivator {
 	ServiceReference<?> serviceReference;
+	ServiceReference<?> productServiceReference;
+	
 	
 	private OrderService orderService;
+	private ProductService productService;
 	
 	@Override 
 	public void start(BundleContext context) throws Exception {
@@ -20,6 +24,10 @@ public class Activator implements BundleActivator {
 		serviceReference = context.getServiceReference(OrderService.class.getName());
 		orderService = (OrderService) context.getService(serviceReference);
 		
+		 // Get ProductService
+        productServiceReference = context.getServiceReference(ProductService.class.getName());
+        productService = (ProductService) context.getService(productServiceReference);
+        
 		displayMenu();
 		
 	}
@@ -47,13 +55,20 @@ public class Activator implements BundleActivator {
                     System.out.println("OrderService is not available, unable to place order.");
                 }
                 break;
-
+            case 2:
+                if (productService != null) {
+                    productService.startProductService();
+                } else {
+                    System.out.println("ProductService is not available, unable to manage products.");
+                }
+                break;
             case 0:
                 System.out.println("Exiting...");
                 return;
             default:
                 System.out.println("Invalid choice, please try again.");
         }
+            
 		}
 	}
 	
@@ -63,7 +78,9 @@ public class Activator implements BundleActivator {
 	public void stop(BundleContext context) throws Exception {
 		System.out.println("Shutting down Order Management Console.");
 		context.ungetService(serviceReference);
+		context.ungetService(productServiceReference);
 		
+	
 	}
 
 	
