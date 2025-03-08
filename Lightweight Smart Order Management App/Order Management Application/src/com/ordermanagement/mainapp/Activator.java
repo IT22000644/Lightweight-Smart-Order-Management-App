@@ -29,11 +29,11 @@ public class Activator implements BundleActivator {
 		
 		while (true) {
 			System.out.println("\n=== Order Management Console ===");
-            System.out.println("1. Place Order");
-            System.out.println("2. Cancel Order");
-            System.out.println("3. View Products");
-            System.out.println("4. Process Payment");
-            System.out.println("5. View Customer Info");
+            System.out.println("1. Order Management");
+            System.out.println("2. Product Managment");
+            System.out.println("3. Inventory Management");
+            System.out.println("4. Payment Management");
+            System.out.println("5. Customer Managment");
             System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
             
