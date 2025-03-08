@@ -8,5 +8,5 @@ Bundle-Activator: product.producer.service.productproducer.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Automatic-Module-Name: product.producer.service.productProducer
 Import-Package: org.osgi.framework;version="1.3.0"
-Require-Bundle: product.consumer.service.productConsumer;bundle-version="1.0.0"
+Require-Bundle: database.connector.service.DatabaseConnector;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
