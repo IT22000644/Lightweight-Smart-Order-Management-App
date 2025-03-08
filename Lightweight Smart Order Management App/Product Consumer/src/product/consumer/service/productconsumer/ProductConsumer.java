@@ -1,4 +1,4 @@
-package product.consumer.service.product_consumer;
+package product.consumer.service.productconsumer;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
