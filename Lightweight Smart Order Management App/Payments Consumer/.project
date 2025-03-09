@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>payments.consumer.service.PaymentConsumer</name>
+	<name>payment.consumer.service.PaymentConsumer</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -21,7 +21,7 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1741446042799</id>
+			<id>1741534988624</id>
 			<name></name>
 			<type>30</type>
 			<matcher>

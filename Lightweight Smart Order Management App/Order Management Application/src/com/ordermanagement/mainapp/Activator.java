@@ -6,27 +6,40 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
+import customer.consumer.service.customerconsumer.CustomerService;
 import order.consumer.service.orderconsumer.OrderService;
+import payment.consumer.service.paymentconsumer.PaymentService;
 import product.consumer.service.productconsumer.ProductService;
 
 
 public class Activator implements BundleActivator {
-	ServiceReference<?> serviceReference;
+	ServiceReference<?> orderServiceReference;
 	ServiceReference<?> productServiceReference;
+	ServiceReference<?> customerServiceReference;
+	ServiceReference<?> paymentServiceReference;
 	
 	
 	private OrderService orderService;
 	private ProductService productService;
+	private CustomerService customerService;
+	private PaymentService paymentService;
 	
 	@Override 
 	public void start(BundleContext context) throws Exception {
 		System.out.println("Start Subscriber Service");
-		serviceReference = context.getServiceReference(OrderService.class.getName());
-		orderService = (OrderService) context.getService(serviceReference);
+		orderServiceReference = context.getServiceReference(OrderService.class.getName());
+		orderService = (OrderService) context.getService(orderServiceReference);
 		
 		 // Get ProductService
         productServiceReference = context.getServiceReference(ProductService.class.getName());
         productService = (ProductService) context.getService(productServiceReference);
+        
+        customerServiceReference = context.getServiceReference(CustomerService.class.getName());
+        customerService = (CustomerService) context.getService(customerServiceReference);
+        
+        paymentServiceReference = context.getServiceReference(PaymentService.class.getName());
+        paymentService = (PaymentService) context.getService(paymentServiceReference);
+        
         
 		displayMenu();
 		
@@ -36,14 +49,23 @@ public class Activator implements BundleActivator {
 		Scanner sc = new Scanner(System.in);
 		
 		while (true) {
-			System.out.println("\n=== Order Management Console ===");
-            System.out.println("1. Order Management");
-            System.out.println("2. Product Managment");
-            System.out.println("3. Inventory Management");
-            System.out.println("4. Payment Management");
-            System.out.println("5. Customer Managment");
-            System.out.println("0. Exit");
-            System.out.print("Enter your choice: ");
+			System.out.println("\n");
+			System.out.println("███████╗███╗   ███╗ █████╗ ██╗     ██╗      ██████╗ ███╗   ███╗███████╗");
+			System.out.println("██╔════╝████╗ ████║██╔══██╗██║     ██║     ██╔═══██╗████╗ ████║██╔════╝");
+			System.out.println("█████╗  ██╔████╔██║███████║██║     ██║     ██║   ██║██╔████╔██║█████╗  ");
+			System.out.println("██╔══╝  ██║╚██╔╝██║██╔══██║██║     ██║     ██║   ██║██║╚██╔╝██║██╔══╝  ");
+			System.out.println("███████╗██║ ╚═╝ ██║██║  ██║███████╗███████╗╚██████╔╝██║ ╚═╝ ██║███████╗");
+			System.out.println("╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝");
+			System.out.println("═══════════════════════════════════════════════════════════════════════");
+			System.out.println("                      NEXT-GEN MANAGEMENT SYSTEM                        ");
+			System.out.println("═══════════════════════════════════════════════════════════════════════");
+			System.out.println("║ [1] 📦 Orders                    │ [4] 💳 Payments                   	║");
+			System.out.println("║ [2] 🏷 Products                  │ [5] 👥 Customers                 	║");
+			System.out.println("║ [3] 🏬 Inventory                 │ [0] ❌ Exit                        	║");
+			System.out.println("╚═══════════════════════════════════════════════════════════════════════╝");
+			System.out.print("⏩ Enter your choice: ");
+
+
             
             int choice = sc.nextInt();
             
@@ -62,6 +84,21 @@ public class Activator implements BundleActivator {
                     System.out.println("ProductService is not available, unable to manage products.");
                 }
                 break;
+            
+            case 4:
+                if (paymentService != null) {
+                    paymentService.startPaymentService();
+                } else {
+                    System.out.println("CustomerService is not available, unable to manage products.");
+                }
+                break;
+            case 5:
+                if (customerService != null) {
+                    customerService.startCustomerService();
+                } else {
+                    System.out.println("CustomerService is not available, unable to manage products.");
+                }
+                break;
             case 0:
                 System.out.println("Exiting...");
                 return;
@@ -77,8 +114,10 @@ public class Activator implements BundleActivator {
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		System.out.println("Shutting down Order Management Console.");
-		context.ungetService(serviceReference);
+		context.ungetService(orderServiceReference);
 		context.ungetService(productServiceReference);
+		context.ungetService(customerServiceReference);
+		context.ungetService(paymentServiceReference);
 		
 	
 	}

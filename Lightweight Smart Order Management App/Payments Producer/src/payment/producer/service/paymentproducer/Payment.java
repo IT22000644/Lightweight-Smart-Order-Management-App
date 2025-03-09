@@ -1,5 +1,5 @@
 package payment.producer.service.paymentproducer;
 
-public class ServiceTrackerManager {
+public class Payment {
 
 }
