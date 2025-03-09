@@ -1,7 +1,10 @@
 package product.consumer.service.productconsumer;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+
 import product.producer.service.productproducer.*;
 
 public class ProductServiceImpl implements ProductService {
@@ -17,14 +20,28 @@ public class ProductServiceImpl implements ProductService {
         Scanner sc = new Scanner(System.in);
 
         while (true) {
-            System.out.println("\n=== Product Management Console ===");
+            System.out.println("\n=== Product Management Console ===\n");
             System.out.println("1. Save Product to Database");
             System.out.println("2. View All Products");
-            System.out.println("0. Exit");
+            System.out.println("3. Edit a Product");
+            System.out.println("4. Delete a Product");
+            System.out.println("0. Exit\n");
+
             System.out.print("Enter your choice: ");
 
-            int choice = sc.nextInt();
-            sc.nextLine();  
+            int choice = -1; 
+            
+            while (true) {
+                try {
+                    choice = sc.nextInt(); 
+                    sc.nextLine();
+                    break;
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid input! Please enter a valid number. \n");
+                    System.out.print("Enter your choice: ");
+                    sc.nextLine(); 
+                }
+            }
 
             switch (choice) {
                 case 1:
@@ -34,47 +51,73 @@ public class ProductServiceImpl implements ProductService {
                 case 2:
                     listAllProducts();
                     break;
-
+                case 3:
+                    updateProduct();
+                    break;
+                case 4:
+                    deleteProduct();
+                    break;
                 case 0:
                     System.out.println("Exiting Product Service...");
                     return;
 
                 default:
-                    System.out.println("Invalid choice, please try again.");
+                    System.out.println("Invalid choice, please try again.\n");
             }
         }
     }
 
     private void saveProduct(Scanner sc) {
-        System.out.print("Enter product name: ");
-        String productName = sc.nextLine();
+        String productName = "";
+        String productCategory = "";
+        String productDescription = "";
 
-        System.out.print("Enter product category: ");
-        String productCategory = sc.nextLine();
+        
+        while (productName.trim().isEmpty()) {
+            System.out.print("\nEnter product name: ");
+            productName = sc.nextLine();
+            if (productName.trim().isEmpty()) {
+                System.out.println("\nProduct name cannot be empty. Please try again.");
+            }
+        }
 
-        System.out.print("Enter product description: ");
-        String productDescription = sc.nextLine();
+        
+        while (productCategory.trim().isEmpty()) {
+            System.out.print("Enter product category: ");
+            productCategory = sc.nextLine();
+            if (productCategory.trim().isEmpty()) {
+                System.out.println("\nProduct category cannot be empty. Please try again.");
+            }
+        }
 
+        
+        System.out.print("Enter product description (optional): ");
+        productDescription = sc.nextLine();
+
+       
         double productPrice = 0.0;
         boolean validPrice = false;
         while (!validPrice) {
             try {
                 System.out.print("Enter product price: ");
-                productPrice = Double.parseDouble(sc.nextLine()); 
+                productPrice = Double.parseDouble(sc.nextLine());
                 validPrice = true;
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input for price. Please enter a valid number.");
+                System.out.println("Invalid input for price. Please enter a valid number.\n");
             }
         }
 
+        
         Product product = new Product(0, productName, productCategory, productDescription, productPrice);
+
+        
         productProducer.saveToDB(product);
         System.out.println("-> Product saved successfully!");
     }
 
     @Override
     public void listAllProducts() {
-        System.out.println("\n=== List of All Products ===");
+        System.out.println("\n=== List of All Products ===\n");
         List<Product> products = productProducer.getAllProducts();
 
         if (products.isEmpty()) {
@@ -86,6 +129,118 @@ public class ProductServiceImpl implements ProductService {
                                    " | Category: " + product.getCategory() +
                                    " | Description: " + product.getDescription() +
                                    " | Price: $" + product.getPrice());
+            }
+        }
+    }
+    
+    @Override
+    public void updateProduct() {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.print("\nEnter the product name to search: ");
+        String productName = scanner.nextLine();
+
+        
+        List<Product> productList = productProducer.getAllProducts()
+            .stream()
+            .filter(p -> p.getName().equalsIgnoreCase(productName))
+            .collect(Collectors.toList());
+
+        if (productList.isEmpty()) {
+            System.out.println("\nProduct(s) were not Found.");
+            return;
+        }
+
+        int productId;
+        if (productList.size() > 1) {
+            System.out.println("\nMultiple products found:\n");
+            for (Product product : productList) {
+                System.out.println("ID: " + product.getId() +
+                        " | Name: " + product.getName() +
+                        " | Category: " + product.getCategory() +
+                        " | Description: " + product.getDescription() +
+                        " | Price: $" + product.getPrice());
+            }
+            System.out.print("\nEnter the Product ID to edit: ");
+            productId = scanner.nextInt();
+            scanner.nextLine();
+        } else {
+            productId = productList.get(0).getId();
+        }
+
+        
+        System.out.print("Enter new name (or press Enter to keep unchanged): ");
+        String newName = scanner.nextLine();
+        
+        System.out.print("Enter new category (or press Enter to keep unchanged): ");
+        String newCategory = scanner.nextLine();
+        
+        System.out.print("Enter new description (or press Enter to keep unchanged): ");
+        String newDescription = scanner.nextLine();
+        
+        System.out.print("Enter new price (or press Enter to keep unchanged): ");
+        String priceInput = scanner.nextLine();
+        Double newPrice = priceInput.isEmpty() ? null : Double.parseDouble(priceInput);
+
+        productProducer.updateProduct(productId, newName, newCategory, newDescription, newPrice);
+        
+  
+    }
+    
+    @Override
+    public void deleteProduct() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("\nEnter the product name to search: ");
+        String productName = scanner.nextLine();
+
+        
+        List<Product> matchingProducts = productProducer.getAllProducts()
+            .stream()
+            .filter(p -> p.getName().equalsIgnoreCase(productName))
+            .collect(Collectors.toList());
+
+        if (matchingProducts.isEmpty()) {
+            System.out.println("\nProduct(s) were not Found."
+            		+ "");
+            return;
+        }
+
+        int productId;
+        if (matchingProducts.size() == 1) {
+            Product product = matchingProducts.get(0);
+            System.out.println("\nThe Product was Found : \n");
+            System.out.println("ID: " + product.getId() + " | Name: " + product.getName() +
+                               " | Category: " + product.getCategory() +
+                               " | Price: $" + product.getPrice());
+
+            System.out.print("\nAre you sure you want to delete this product? (y/n): ");
+            String confirmation = scanner.nextLine();
+
+            if (confirmation.equalsIgnoreCase("y")) {
+                productProducer.deleteProduct(product.getId());
+            } else {
+                System.out.println("\nProduct was not Deleted.");
+            }
+        } else {
+            System.out.println("\nMultiple products found: \n");
+            for (Product product : matchingProducts) {
+                System.out.println("ID: " + product.getId() + " | Name: " + product.getName() +
+                                   " | Category: " + product.getCategory() +
+                                   " | Price: $" + product.getPrice());
+            }
+
+            System.out.print("\nEnter the Product ID to delete: ");
+            productId = scanner.nextInt();
+            scanner.nextLine(); 
+
+            System.out.print("\nAre you sure you want to delete this product? (y/n): ");
+            String confirmation = scanner.nextLine();
+
+            if (confirmation.equalsIgnoreCase("y")) {
+                productProducer.deleteProduct(productId);
+            } else {
+                System.out.println("\nProduct was not Deleted.");
             }
         }
     }

@@ -54,4 +54,57 @@ public class ProductProducerImpl implements ProductProducer {
         return products;
     }
     
+    @Override
+    public void updateProduct(int id, String name, String category, String description, Double price) {
+        
+        String selectQuery = "SELECT name, category, description, price FROM products WHERE id = ?";
+        String updateQuery = "UPDATE products SET name = ?, category = ?, description = ?, price = ? WHERE id = ?";
+        
+        try (PreparedStatement selectStmt = conn.prepareStatement(selectQuery)) {
+            selectStmt.setInt(1, id);
+            ResultSet rs = selectStmt.executeQuery();
+
+            if (rs.next()) {
+                
+                String newName = (name == null || name.isEmpty()) ? rs.getString("name") : name;
+                String newCategory = (category == null || category.isEmpty()) ? rs.getString("category") : category;
+                String newDescription = (description == null || description.isEmpty()) ? rs.getString("description") : description;
+                Double newPrice = (price == null) ? rs.getDouble("price") : price;
+
+              
+                try (PreparedStatement updateStmt = conn.prepareStatement(updateQuery)) {
+                    updateStmt.setString(1, newName);
+                    updateStmt.setString(2, newCategory);
+                    updateStmt.setString(3, newDescription);
+                    updateStmt.setDouble(4, newPrice);
+                    updateStmt.setInt(5, id);
+                    updateStmt.executeUpdate();
+                    System.out.println("Product updated successfully.");
+                }
+            } else {
+                System.out.println("Product not found.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @Override
+    public void deleteProduct(int id) {
+        String sql = "DELETE FROM products WHERE id = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            int rowsAffected = stmt.executeUpdate();
+            
+            if (rowsAffected > 0) {
+                System.out.println("Product deleted successfully.");
+            } else {
+                System.out.println("Product not found.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
 }
