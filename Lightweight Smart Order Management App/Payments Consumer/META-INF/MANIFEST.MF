@@ -1,11 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: PaymentConsumer
-Bundle-SymbolicName: payments.consumer.service.PaymentConsumer
+Bundle-SymbolicName: payment.consumer.service.PaymentConsumer
 Bundle-Version: 1.0.0.qualifier
-Export-Package: payments.consumer.service.paymentconsumer
-Bundle-Activator: payments.consumer.service.paymentconsumer.Activator
-Bundle-RequiredExecutionEnvironment: JavaSE-17
-Automatic-Module-Name: payments.consumer.service.PaymentConsumer
+Bundle-Activator: payment.consumer.service.paymentconsumer.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Automatic-Module-Name: payment.consumer.service.PaymentConsumer
 Import-Package: org.osgi.framework;version="1.3.0"
 Bundle-ActivationPolicy: lazy
