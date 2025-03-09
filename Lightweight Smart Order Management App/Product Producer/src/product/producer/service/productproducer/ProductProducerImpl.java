@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProductProducerImpl implements ProductProducer {
 
@@ -107,4 +109,106 @@ public class ProductProducerImpl implements ProductProducer {
         }
     }
     
+    @Override
+    public List<Product> filterProducts(String name, String category, Double minPrice, Double maxPrice) {
+        List<Product> products = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT id, name, category, description, price FROM products WHERE 1=1");
+
+        if (name != null && !name.isEmpty()) {
+            sql.append(" AND name LIKE ?");
+        }
+        if (category != null && !category.isEmpty()) {
+            sql.append(" AND category LIKE ?");
+        }
+        if (minPrice != null) {
+            sql.append(" AND price >= ?");
+        }
+        if (maxPrice != null) {
+            sql.append(" AND price <= ?");
+        }
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+            int index = 1;
+
+            if (name != null && !name.isEmpty()) {
+                stmt.setString(index++, "%" + name + "%");
+            }
+            if (category != null && !category.isEmpty()) {
+                stmt.setString(index++, "%" + category + "%");
+            }
+            if (minPrice != null) {
+                stmt.setDouble(index++, minPrice);
+            }
+            if (maxPrice != null) {
+                stmt.setDouble(index++, maxPrice);
+            }
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Product product = new Product(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("category"),
+                        rs.getString("description"),
+                        rs.getDouble("price")
+                    );
+                    products.add(product);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
+    }
+    
+    @Override
+    public ProductSummary getProductSummary() {
+        List<Product> products = getAllProducts();  
+        ProductSummary summary = new ProductSummary();
+
+        
+        double lowestPrice = Double.MAX_VALUE;
+        double highestPrice = Double.MIN_VALUE;
+        int highestSameCategoryCount = 0;
+        int lowestSameCategoryCount = Integer.MAX_VALUE;
+
+        
+        Map<String, Integer> categoryCountMap = new HashMap<>();
+
+        
+        for (Product product : products) {
+            
+            categoryCountMap.put(product.getCategory(),
+                    categoryCountMap.getOrDefault(product.getCategory(), 0) + 1);
+
+            
+            if (product.getPrice() < lowestPrice) {
+                lowestPrice = product.getPrice();
+            }
+            if (product.getPrice() > highestPrice) {
+                highestPrice = product.getPrice();
+            }
+        }
+
+        
+        for (Map.Entry<String, Integer> entry : categoryCountMap.entrySet()) {
+            int count = entry.getValue();
+            if (count > highestSameCategoryCount) {
+                highestSameCategoryCount = count;
+            }
+            if (count < lowestSameCategoryCount) {
+                lowestSameCategoryCount = count;
+            }
+        }
+
+       
+        summary.setTotalProducts(products.size());
+        summary.setTotalCategories(categoryCountMap.size());
+        summary.setLowestPrice(lowestPrice);
+        summary.setHighestPrice(highestPrice);
+        summary.setHighestSameCategoryCount(highestSameCategoryCount);
+        summary.setLowestSameCategoryCount(lowestSameCategoryCount);
+
+        return summary;
+    }
 }

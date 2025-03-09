@@ -66,8 +66,10 @@ public class ProductServiceImpl implements ProductService {
             }
         }
     }
+    
 
-    private void saveProduct(Scanner sc) {
+    @Override
+    public void saveProduct(Scanner sc) {
         String productName = "";
         String productCategory = "";
         String productDescription = "";
@@ -117,23 +119,107 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void listAllProducts() {
-        System.out.println("\n=== List of All Products ===\n");
+        Scanner scanner = new Scanner(System.in);
         List<Product> products = productProducer.getAllProducts();
 
         if (products.isEmpty()) {
             System.out.println("No products available.");
         } else {
-            
             System.out.printf("%-5s | %-20s | %-15s | %-20s | %-10s\n", "ID", "Name", "Category", "Description", "Price ($)");
             System.out.println("----------------------------------------------------------------------------------------------");
-
-            
             for (Product product : products) {
                 System.out.printf("%-5d | %-20s | %-15s | %-20s | %-10.2f\n",
                         product.getId(), product.getName(), product.getCategory(),
                         product.getDescription(), product.getPrice());
             }
         }
+
+        System.out.println("\n1. Filter Products");
+        System.out.println("2. View Product Summary");
+        System.out.println("0. Back to Main Menu");
+        System.out.print("Enter your choice: ");
+        
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        if (choice == 1) {
+            filterProducts(scanner);
+        } else if (choice == 2) {
+            productSummary();
+        }
+        
+    }
+
+    @Override
+    public void filterProducts(Scanner scanner) {
+        System.out.print("\nEnter product name to filter (or press Enter to skip): ");
+        String name = scanner.nextLine().trim();
+        
+        System.out.print("Enter product category to filter (or press Enter to skip): ");
+        String category = scanner.nextLine().trim();
+        
+        Double minPrice = null, maxPrice = null;
+        
+        System.out.print("Enter minimum price (or press Enter to skip): ");
+        String minInput = scanner.nextLine().trim();
+        if (!minInput.isEmpty()) minPrice = Double.parseDouble(minInput);
+        
+        System.out.print("Enter maximum price (or press Enter to skip): ");
+        String maxInput = scanner.nextLine().trim();
+        if (!maxInput.isEmpty()) maxPrice = Double.parseDouble(maxInput);
+        
+        List<Product> filteredProducts = productProducer.filterProducts(name, category, minPrice, maxPrice);
+        
+        if (filteredProducts.isEmpty()) {
+            System.out.println("\nNo matching products found.");
+        } else {
+            System.out.println("\n=== Filtered Products ===\n");
+            System.out.printf("%-5s | %-20s | %-15s | %-20s | %-10s\n", "ID", "Name", "Category", "Description", "Price ($)");
+            System.out.println("----------------------------------------------------------------------------------------------");
+            for (Product product : filteredProducts) {
+                System.out.printf("%-5d | %-20s | %-15s | %-20s | %-10.2f\n",
+                        product.getId(), product.getName(), product.getCategory(),
+                        product.getDescription(), product.getPrice());
+            }
+        }
+        
+        
+        System.out.println("\n1. Filter Again");
+        System.out.println("2. View Product Summary");
+        System.out.println("0. Back to Main Menu");
+        System.out.print("Enter your choice: ");
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        if (choice == 1) {
+            filterProducts(scanner); 
+        } else if (choice == 2) {
+           productSummary();
+        }
+    }
+    
+    @Override
+    public void productSummary() {
+    	Scanner scanner = new Scanner(System.in);
+        List<Product> products = productProducer.getAllProducts();
+
+        if (products.isEmpty()) {
+            System.out.println("\nNo products available for summary.");
+        } else {
+            
+            ProductSummary summary = productProducer.getProductSummary(); 
+
+            System.out.println("\n=== Product Summary ===");
+            System.out.println("Total Number of Products: " + summary.getTotalProducts());
+            System.out.println("Total Number of Categories: " + summary.getTotalCategories());
+            System.out.printf("Lowest Product Price: $%.2f\n", summary.getLowestPrice());
+            System.out.printf("Highest Product Price: $%.2f\n", summary.getHighestPrice());
+            System.out.println("Highest Products in Same Category: " + summary.getHighestSameCategoryCount());
+            System.out.println("Lowest Products in Same Category: " + summary.getLowestSameCategoryCount());
+            
+        }
+
+        startProductService();
     }
     
     @Override
