@@ -123,12 +123,15 @@ public class ProductServiceImpl implements ProductService {
         if (products.isEmpty()) {
             System.out.println("No products available.");
         } else {
+            
+            System.out.printf("%-5s | %-20s | %-15s | %-20s | %-10s\n", "ID", "Name", "Category", "Description", "Price ($)");
+            System.out.println("----------------------------------------------------------------------------------------------");
+
+            
             for (Product product : products) {
-                System.out.println("ID: " + product.getId() +
-                                   " | Name: " + product.getName() +
-                                   " | Category: " + product.getCategory() +
-                                   " | Description: " + product.getDescription() +
-                                   " | Price: $" + product.getPrice());
+                System.out.printf("%-5d | %-20s | %-15s | %-20s | %-10.2f\n",
+                        product.getId(), product.getName(), product.getCategory(),
+                        product.getDescription(), product.getPrice());
             }
         }
     }
@@ -154,13 +157,17 @@ public class ProductServiceImpl implements ProductService {
         int productId;
         if (productList.size() > 1) {
             System.out.println("\nMultiple products found:\n");
+
+            
+            System.out.printf("%-5s | %-20s | %-15s | %-20s | %-10s\n", "ID", "Name", "Category", "Description", "Price ($)");
+            System.out.println("----------------------------------------------------------------------------------------------");
+
             for (Product product : productList) {
-                System.out.println("ID: " + product.getId() +
-                        " | Name: " + product.getName() +
-                        " | Category: " + product.getCategory() +
-                        " | Description: " + product.getDescription() +
-                        " | Price: $" + product.getPrice());
+                System.out.printf("%-5d | %-20s | %-15s | %-20s | %-10.2f\n",
+                        product.getId(), product.getName(), product.getCategory(),
+                        product.getDescription(), product.getPrice());
             }
+
             System.out.print("\nEnter the Product ID to edit: ");
             productId = scanner.nextInt();
             scanner.nextLine();
@@ -194,54 +201,66 @@ public class ProductServiceImpl implements ProductService {
         System.out.print("\nEnter the product name to search: ");
         String productName = scanner.nextLine();
 
-        
         List<Product> matchingProducts = productProducer.getAllProducts()
             .stream()
             .filter(p -> p.getName().equalsIgnoreCase(productName))
             .collect(Collectors.toList());
 
         if (matchingProducts.isEmpty()) {
-            System.out.println("\nProduct(s) were not Found."
-            		+ "");
+            System.out.println("\nNo product found.");
             return;
         }
 
-        int productId;
+       
         if (matchingProducts.size() == 1) {
             Product product = matchingProducts.get(0);
-            System.out.println("\nThe Product was Found : \n");
-            System.out.println("ID: " + product.getId() + " | Name: " + product.getName() +
-                               " | Category: " + product.getCategory() +
-                               " | Price: $" + product.getPrice());
+            System.out.println("\nProduct Found:\n");
 
+            
+            System.out.printf("%-5s | %-20s | %-15s | %-30s | %-10s\n", "ID", "Name", "Category", "Description", "Price ($)");
+            System.out.println("----------------------------------------------------------------------------------------------");
+            System.out.printf("%-5d | %-20s | %-15s | %-30s | %-10.2f\n",
+                    product.getId(), product.getName(), product.getCategory(),
+                    product.getDescription(), product.getPrice());
+
+            
             System.out.print("\nAre you sure you want to delete this product? (y/n): ");
             String confirmation = scanner.nextLine();
 
             if (confirmation.equalsIgnoreCase("y")) {
                 productProducer.deleteProduct(product.getId());
+                System.out.println("\nProduct deleted successfully.");
             } else {
-                System.out.println("\nProduct was not Deleted.");
+                System.out.println("\nProduct was not deleted.");
             }
+            return;
+        }
+
+       
+        System.out.println("\nMultiple products found:\n");
+        System.out.printf("%-5s | %-20s | %-15s | %-30s | %-10s\n", "ID", "Name", "Category", "Description", "Price ($)");
+        System.out.println("----------------------------------------------------------------------------------------------");
+
+        for (Product product : matchingProducts) {
+            System.out.printf("%-5d | %-20s | %-15s | %-30s | %-10.2f\n",
+                    product.getId(), product.getName(), product.getCategory(),
+                    product.getDescription(), product.getPrice());
+        }
+
+        
+        System.out.print("\nEnter the Product ID to delete: ");
+        int productId = scanner.nextInt();
+        scanner.nextLine(); 
+
+     
+        System.out.print("\nAre you sure you want to delete this product? (y/n): ");
+        String confirmation = scanner.nextLine();
+
+        if (confirmation.equalsIgnoreCase("y")) {
+            productProducer.deleteProduct(productId);
+            System.out.println("\nProduct deleted successfully.");
         } else {
-            System.out.println("\nMultiple products found: \n");
-            for (Product product : matchingProducts) {
-                System.out.println("ID: " + product.getId() + " | Name: " + product.getName() +
-                                   " | Category: " + product.getCategory() +
-                                   " | Price: $" + product.getPrice());
-            }
-
-            System.out.print("\nEnter the Product ID to delete: ");
-            productId = scanner.nextInt();
-            scanner.nextLine(); 
-
-            System.out.print("\nAre you sure you want to delete this product? (y/n): ");
-            String confirmation = scanner.nextLine();
-
-            if (confirmation.equalsIgnoreCase("y")) {
-                productProducer.deleteProduct(productId);
-            } else {
-                System.out.println("\nProduct was not Deleted.");
-            }
+            System.out.println("\nProduct was not deleted.");
         }
     }
 }
