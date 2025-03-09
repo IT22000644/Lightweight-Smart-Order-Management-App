@@ -3,17 +3,10 @@ Bundle-ManifestVersion: 2
 Bundle-Name: PaymentConsumer
 Bundle-SymbolicName: payment.consumer.service.PaymentConsumer
 Bundle-Version: 1.0.0.qualifier
-<<<<<<< HEAD
 Export-Package: payment.consumer.service.paymentconsumer
 Bundle-Activator: payment.consumer.service.paymentconsumer.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: payment.consumer.service.PaymentConsumer
 Import-Package: org.osgi.framework;version="[1.10.0,2.0.0)",
  payment.producer.service.paymentproducer
-=======
-Bundle-Activator: payment.consumer.service.paymentconsumer.Activator
-Bundle-RequiredExecutionEnvironment: JavaSE-21
-Automatic-Module-Name: payment.consumer.service.PaymentConsumer
-Import-Package: org.osgi.framework;version="1.3.0"
->>>>>>> e8ed20711934050731b1b172d6d2b2495cbc11e3
 Bundle-ActivationPolicy: lazy
