@@ -2,6 +2,7 @@ package payment.consumer.service.paymentconsumer;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+<<<<<<< HEAD
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 
@@ -38,5 +39,23 @@ public class Activator implements BundleActivator {
 	}
 
 	
+=======
+
+public class Activator implements BundleActivator {
+
+	private static BundleContext context;
+
+	static BundleContext getContext() {
+		return context;
+	}
+
+	public void start(BundleContext bundleContext) throws Exception {
+		Activator.context = bundleContext;
+	}
+
+	public void stop(BundleContext bundleContext) throws Exception {
+		Activator.context = null;
+	}
+>>>>>>> e8ed20711934050731b1b172d6d2b2495cbc11e3
 
 }
