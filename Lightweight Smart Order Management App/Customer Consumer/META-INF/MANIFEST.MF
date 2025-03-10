@@ -8,5 +8,5 @@ Bundle-Activator: customer.consumer.service.customerconsumer.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Automatic-Module-Name: customer.consumer.service.CustomerConsumer
 Import-Package: customer.producer.service.customerproducer,
- org.osgi.framework;version="1.3.0"
+ org.osgi.framework;version="[1.10.0,2.0.0)"
 Bundle-ActivationPolicy: lazy

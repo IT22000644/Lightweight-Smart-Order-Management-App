@@ -130,7 +130,7 @@ public class Activator implements BundleActivator {
         if (productServiceReference != null) context.ungetService(productServiceReference);
         if (customerServiceReference != null) context.ungetService(customerServiceReference);
         if (paymentServiceReference != null) context.ungetService(paymentServiceReference);
-        if (inventoryServiceReference != null) context.ungetService(inventoryServiceReference);	
+        if (inventoryServiceReference != null) context.ungetService(inventoryServiceReference);
 	}
 
 	
