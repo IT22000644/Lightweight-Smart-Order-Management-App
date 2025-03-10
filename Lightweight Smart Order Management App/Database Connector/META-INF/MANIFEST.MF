@@ -6,7 +6,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: database.connector.service.databaseconnector.Activator
 Bundle-ClassPath: .,
  libs/mysql-connector-j-9.2.0.jar
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Automatic-Module-Name: database.connector.service.DatabaseConnector
 Bundle-ActivationPolicy: lazy
 Import-Package: org.osgi.framework;version="[1.10.0,2.0.0)"

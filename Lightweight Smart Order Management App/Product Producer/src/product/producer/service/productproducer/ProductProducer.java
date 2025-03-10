@@ -9,4 +9,6 @@ public interface ProductProducer {
     void deleteProduct(int id);
     List<Product> filterProducts(String name, String category, Double minPrice, Double maxPrice);
     ProductSummary getProductSummary();
+    double getProductPrice(int productId);
+    Product getProduct(int productId);
 }

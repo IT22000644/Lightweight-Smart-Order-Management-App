@@ -2,29 +2,33 @@ package customer.consumer.service.customerconsumer;
 
 import java.util.Scanner;
 
+import customer.producer.service.customerproducer.Customer;
 import customer.producer.service.customerproducer.CustomerProducer;
 
 public class CustomerServiceImpl implements CustomerService {
 	
 	private CustomerProducer customerProducer;
+	private Scanner sc;
 	
 	public CustomerServiceImpl (CustomerProducer customerProducer) {
 		this.customerProducer = customerProducer;
+		this.sc = new Scanner(System.in);
 	}
 
 	@Override
 	public void startCustomerService() {
-		Scanner sc = new Scanner(System.in);
         int choice = -1;
+        
+        System.out.println("\n");
+        System.out.println(" ╔═════════════════════════════════════════════╗ ");
+        System.out.println(" ║                                             ║ ");
+        System.out.println(" ║     ★★★★★ WELCOME TO THE ★★★★★           ║ ");
+        System.out.println(" ║              CUSTOMER MODULE                ║ ");
+        System.out.println(" ║                                             ║ ");
+        System.out.println(" ╚═════════════════════════════════════════════╝ ");
 
         while (true) {
-            System.out.println("\n");
-            System.out.println(" ╔═════════════════════════════════════════════╗ ");
-            System.out.println(" ║                                             ║ ");
-            System.out.println(" ║     ★★★★★ WELCOME TO THE ★★★★★           ║ ");
-            System.out.println(" ║              CUSTOMER MODULE                ║ ");
-            System.out.println(" ║                                             ║ ");
-            System.out.println(" ╚═════════════════════════════════════════════╝ ");
+            
             System.out.println(" ══════════════════════════════════════════════ ");
             System.out.println("     [1] 🧑‍🤝‍🧑 Add Customer                     ");
             System.out.println("     [2] 📜 View Customers                    ");
@@ -39,7 +43,7 @@ public class CustomerServiceImpl implements CustomerService {
 
                 switch (choice) {
                     case 1:
-                        System.out.println("-> Customer Added Successfully");
+                        addCustomer();
                         break;
 
                     case 2:
@@ -72,7 +76,38 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public void addCustomer() {
-		// TODO Auto-generated method stub
+		System.out.println("\n╔════════════════════════════════════════╗");
+	    System.out.println("║           🆕 ADD NEW CUSTOMER          ║");
+	    System.out.println("╚════════════════════════════════════════╝");
+	    
+	    sc.nextLine();
+
+	    System.out.print("🧑 Enter Customer Name: ");
+	    String name = sc.nextLine().trim(); 
+
+	    if (name.isEmpty()) {
+	        System.out.println("❌ Customer name cannot be blank!");
+	        return;
+	    }
+
+	    System.out.print("📧 Enter Email: ");
+	    String email = sc.nextLine().trim();
+
+	    System.out.print("📞 Enter Phone Number: ");
+	    String phone = sc.nextLine().trim();
+
+	    Customer newCustomer = new Customer(name, email, phone);
+
+	    boolean success = customerProducer.addCustomer(newCustomer);
+
+	    System.out.println("\n════════════════════════════════════════");
+	    if (success) {
+	        System.out.println("✅ Customer added successfully!");
+	        System.out.println(newCustomer);
+	    } else {
+	        System.out.println("❌ Failed to add customer. Try again.");
+	    }
+	    System.out.println("════════════════════════════════════════\n");
 		
 	}
 

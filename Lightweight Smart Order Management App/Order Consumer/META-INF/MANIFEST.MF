@@ -7,6 +7,10 @@ Export-Package: order.consumer.service.orderconsumer
 Bundle-Activator: order.consumer.service.orderconsumer.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: order.consumer.service.OrderConsumer
-Import-Package: order.producer.service.orderproducer,
- org.osgi.framework;version="[1.10.0,2.0.0)"
+Import-Package: customer.producer.service.customerproducer,
+ inventory.producer.service.inventoryproducer,
+ order.producer.service.orderproducer,
+ org.osgi.framework;version="[1.10.0,2.0.0)",
+ payment.producer.service.paymentproducer,
+ product.producer.service.productproducer
 Bundle-ActivationPolicy: lazy

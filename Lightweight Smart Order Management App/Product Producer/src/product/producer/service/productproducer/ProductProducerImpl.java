@@ -211,4 +211,47 @@ public class ProductProducerImpl implements ProductProducer {
 
         return summary;
     }
+
+	@Override
+	public double getProductPrice(int productId) {
+		
+		String sql = "SELECT price FROM products WHERE id = ?";
+	    
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setInt(1, productId);
+	        
+	        ResultSet rs = pstmt.executeQuery();
+	        if (rs.next()) {
+	            return rs.getDouble("price");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return 0.0;
+	}
+
+	@Override
+	public Product getProduct(int productId) {
+		String sql = "SELECT * FROM products WHERE id = ?";
+	    
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setInt(1, productId);
+	        
+	        ResultSet rs = pstmt.executeQuery();
+	        if (rs.next()) {
+	            return new Product(
+	                rs.getInt("id"),
+	                rs.getString("name"),
+	                rs.getString("category"),
+	                rs.getString("description"),
+	                rs.getDouble("price")
+	            );
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return null;
+	}
 }

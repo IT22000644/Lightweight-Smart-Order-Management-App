@@ -7,6 +7,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
 import customer.consumer.service.customerconsumer.CustomerService;
+import inventory.consumer.service.inventoryconsumer.InventoryService;
 import order.consumer.service.orderconsumer.OrderService;
 import payment.consumer.service.paymentconsumer.PaymentService;
 import product.consumer.service.productconsumer.ProductService;
@@ -17,12 +18,14 @@ public class Activator implements BundleActivator {
 	ServiceReference<?> productServiceReference;
 	ServiceReference<?> customerServiceReference;
 	ServiceReference<?> paymentServiceReference;
+	ServiceReference<?> inventoryServiceReference;
 	
 	
 	private OrderService orderService;
 	private ProductService productService;
 	private CustomerService customerService;
 	private PaymentService paymentService;
+	private InventoryService inventoryService;
 	
 	@Override 
 	public void start(BundleContext context) throws Exception {
@@ -39,6 +42,9 @@ public class Activator implements BundleActivator {
         
         paymentServiceReference = context.getServiceReference(PaymentService.class.getName());
         paymentService = (PaymentService) context.getService(paymentServiceReference);
+        
+        inventoryServiceReference = context.getServiceReference(InventoryService.class.getName());
+        inventoryService = (InventoryService) context.getService(inventoryServiceReference);
         
         
 		displayMenu();
@@ -82,6 +88,13 @@ public class Activator implements BundleActivator {
                     productService.startProductService();
                 } else {
                     System.out.println("ProductService is not available, unable to manage products.");
+                }
+                break;
+            case 3:
+                if (inventoryService != null) {
+                	inventoryService.startInventoryService();
+                } else {
+                    System.out.println("InventorService is not available, unable to manage products.");
                 }
                 break;
             

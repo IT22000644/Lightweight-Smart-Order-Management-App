@@ -5,11 +5,12 @@ Bundle-SymbolicName: com.ordermanagement.MainApp
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: com.ordermanagement.mainapp.Activator
 Bundle-Vendor: ORDERMANAGEMENT
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Automatic-Module-Name: com.ordermanagement.MainApp
 Import-Package: customer.consumer.service.customerconsumer,
  order.consumer.service.orderconsumer,
  org.osgi.framework;version="[1.10.0,2.0.0)",
  payment.consumer.service.paymentconsumer,
- product.consumer.service.productconsumer
+ product.consumer.service.productconsumer,
+ inventory.consumer.service.inventoryconsumer
 Bundle-ActivationPolicy: lazy

@@ -5,7 +5,7 @@ Bundle-SymbolicName: customer.producer.service.CustomerProducer
 Bundle-Version: 1.0.0.qualifier
 Export-Package: customer.producer.service.customerproducer
 Bundle-Activator: customer.producer.service.customerproducer.Activator
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Automatic-Module-Name: customer.producer.service.CustomerProducer
 Import-Package: database.connector.service.databaseconnector,
  org.osgi.framework;version="1.3.0"

@@ -5,7 +5,9 @@ Bundle-SymbolicName: inventory.consumer.service.InventoryConsumer
 Bundle-Version: 1.0.0.qualifier
 Export-Package: inventory.consumer.service.inventoryconsumer
 Bundle-Activator: inventory.consumer.service.inventoryconsumer.Activator
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Automatic-Module-Name: inventory.consumer.service.InventoryConsumer
-Import-Package: org.osgi.framework;version="1.3.0"
+Import-Package: inventory.producer.service.inventoryproducer,
+ org.osgi.framework;version="[1.10.0,2.0.0)",
+ product.producer.service.productproducer
 Bundle-ActivationPolicy: lazy
