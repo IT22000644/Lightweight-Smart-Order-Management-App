@@ -8,9 +8,9 @@ Bundle-Vendor: ORDERMANAGEMENT
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Automatic-Module-Name: com.ordermanagement.MainApp
 Import-Package: customer.consumer.service.customerconsumer,
+ inventory.consumer.service.inventoryconsumer,
  order.consumer.service.orderconsumer,
  org.osgi.framework;version="[1.10.0,2.0.0)",
  payment.consumer.service.paymentconsumer,
- product.consumer.service.productconsumer,
- inventory.consumer.service.inventoryconsumer
+ product.consumer.service.productconsumer
 Bundle-ActivationPolicy: lazy

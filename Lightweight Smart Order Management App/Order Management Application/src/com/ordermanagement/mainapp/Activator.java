@@ -30,21 +30,20 @@ public class Activator implements BundleActivator {
 	@Override 
 	public void start(BundleContext context) throws Exception {
 		System.out.println("Start Subscriber Service");
-		orderServiceReference = context.getServiceReference(OrderService.class.getName());
-		orderService = (OrderService) context.getService(orderServiceReference);
-		
-		 // Get ProductService
-        productServiceReference = context.getServiceReference(ProductService.class.getName());
-        productService = (ProductService) context.getService(productServiceReference);
-        
-        customerServiceReference = context.getServiceReference(CustomerService.class.getName());
-        customerService = (CustomerService) context.getService(customerServiceReference);
-        
-        paymentServiceReference = context.getServiceReference(PaymentService.class.getName());
-        paymentService = (PaymentService) context.getService(paymentServiceReference);
-        
-        inventoryServiceReference = context.getServiceReference(InventoryService.class.getName());
-        inventoryService = (InventoryService) context.getService(inventoryServiceReference);
+		orderServiceReference = context.getServiceReference(OrderService.class);
+        orderService = (orderServiceReference != null) ? (OrderService) context.getService(orderServiceReference) : null;
+
+        productServiceReference = context.getServiceReference(ProductService.class);
+        productService = (productServiceReference != null) ? (ProductService) context.getService(productServiceReference) : null;
+
+        customerServiceReference = context.getServiceReference(CustomerService.class);
+        customerService = (customerServiceReference != null) ? (CustomerService) context.getService(customerServiceReference) : null;
+
+        paymentServiceReference = context.getServiceReference(PaymentService.class);
+        paymentService = (paymentServiceReference != null) ? (PaymentService) context.getService(paymentServiceReference) : null;
+
+        inventoryServiceReference = context.getServiceReference(InventoryService.class);
+        inventoryService = (inventoryServiceReference != null) ? (InventoryService) context.getService(inventoryServiceReference) : null;
         
         
 		displayMenu();
@@ -127,12 +126,11 @@ public class Activator implements BundleActivator {
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		System.out.println("Shutting down Order Management Console.");
-		context.ungetService(orderServiceReference);
-		context.ungetService(productServiceReference);
-		context.ungetService(customerServiceReference);
-		context.ungetService(paymentServiceReference);
-		
-	
+		if (orderServiceReference != null) context.ungetService(orderServiceReference);
+        if (productServiceReference != null) context.ungetService(productServiceReference);
+        if (customerServiceReference != null) context.ungetService(customerServiceReference);
+        if (paymentServiceReference != null) context.ungetService(paymentServiceReference);
+        if (inventoryServiceReference != null) context.ungetService(inventoryServiceReference);	
 	}
 
 	
