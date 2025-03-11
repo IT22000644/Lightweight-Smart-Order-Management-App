@@ -1,18 +1,22 @@
 package product.producer.service.productproducer;
 
+import supplier.producer.service.supplierproducer.Supplier;
+
 public class Product {
 	private int id;
     private String name;
     private String category;
     private String description;
     private double price;
-
-    public Product(int id, String name, String category, String description, double price) {
+    private Supplier supplier;
+    
+    public Product(int id, String name, String category, String description, double price, Supplier supplier ) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.description = description;
         this.price = price;
+        this.supplier = supplier;
     }
 
     public int getId() {
@@ -55,4 +59,11 @@ public class Product {
         this.price = price;
     }
 
+    public Supplier getSupplier() {  
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) { 
+        this.supplier = supplier;
+    }
 }

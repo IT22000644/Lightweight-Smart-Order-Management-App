@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SupplierProducer
+Bundle-SymbolicName: supplier.producer.service.SupplierProducer
+Bundle-Version: 1.0.0.qualifier
+Export-Package: supplier.producer.service.supplierproducer
+Bundle-Activator: supplier.producer.service.supplierproducer.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Automatic-Module-Name: supplier.producer.service.SupplierProducer
+Import-Package: org.osgi.framework;version="1.3.0"
+Require-Bundle: database.connector.service.DatabaseConnector;bundle-version="1.0.0"
+Bundle-ActivationPolicy: lazy

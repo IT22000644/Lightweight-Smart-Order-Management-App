@@ -11,6 +11,7 @@ import inventory.consumer.service.inventoryconsumer.InventoryService;
 import order.consumer.service.orderconsumer.OrderService;
 import payment.consumer.service.paymentconsumer.PaymentService;
 import product.consumer.service.productconsumer.ProductService;
+import supplier.consumer.service.supplierconsumer.*;
 
 
 public class Activator implements BundleActivator {
@@ -19,6 +20,7 @@ public class Activator implements BundleActivator {
 	ServiceReference<?> customerServiceReference;
 	ServiceReference<?> paymentServiceReference;
 	ServiceReference<?> inventoryServiceReference;
+	ServiceReference<?> supplierServiceReference;
 	
 	
 	private OrderService orderService;
@@ -26,6 +28,7 @@ public class Activator implements BundleActivator {
 	private CustomerService customerService;
 	private PaymentService paymentService;
 	private InventoryService inventoryService;
+	private SupplierService supplierService;
 	
 	@Override 
 	public void start(BundleContext context) throws Exception {
@@ -45,6 +48,8 @@ public class Activator implements BundleActivator {
         inventoryServiceReference = context.getServiceReference(InventoryService.class);
         inventoryService = (inventoryServiceReference != null) ? (InventoryService) context.getService(inventoryServiceReference) : null;
         
+        supplierServiceReference = context.getServiceReference(SupplierService.class);
+        supplierService = (supplierServiceReference != null) ? (SupplierService) context.getService(supplierServiceReference) : null;
         
 		displayMenu();
 		
@@ -64,9 +69,10 @@ public class Activator implements BundleActivator {
 			System.out.println("═══════════════════════════════════════════════════════════════════════");
 			System.out.println("                      NEXT-GEN MANAGEMENT SYSTEM                        ");
 			System.out.println("═══════════════════════════════════════════════════════════════════════");
-			System.out.println("║ [1] 📦 Orders                    │ [4] 💳 Payments                   	║");
-			System.out.println("║ [2] 🏷 Products                  │ [5] 👥 Customers                 	║");
+			System.out.println("║ [1] 📦 Orders                    │ [5] 👥 Customers                 	║");
+			System.out.println("║ [2] 🏷 Products                  │ [6] 🚚 Suppliers                	║");
 			System.out.println("║ [3] 🏬 Inventory                 │ [0] ❌ Exit                        	║");
+			System.out.println("║ [4] 💳 Payments                  │ 		                      	║");
 			System.out.println("╚═══════════════════════════════════════════════════════════════════════╝");
 			System.out.print("⏩ Enter your choice: ");
 
@@ -111,6 +117,13 @@ public class Activator implements BundleActivator {
                     System.out.println("CustomerService is not available, unable to manage products.");
                 }
                 break;
+            case 6:
+                if (supplierService != null) {
+                    supplierService.startSupplierService();
+                } else {
+                    System.out.println("SupplierService is not available, unable to manage suppliers.");
+                }
+                break;
             case 0:
                 System.out.println("Exiting...");
                 return;
@@ -131,6 +144,7 @@ public class Activator implements BundleActivator {
         if (customerServiceReference != null) context.ungetService(customerServiceReference);
         if (paymentServiceReference != null) context.ungetService(paymentServiceReference);
         if (inventoryServiceReference != null) context.ungetService(inventoryServiceReference);
+        if (supplierServiceReference != null) context.ungetService(supplierServiceReference);
 	}
 
 	

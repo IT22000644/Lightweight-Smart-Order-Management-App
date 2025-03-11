@@ -12,5 +12,6 @@ Import-Package: customer.consumer.service.customerconsumer,
  order.consumer.service.orderconsumer,
  org.osgi.framework;version="[1.10.0,2.0.0)",
  payment.consumer.service.paymentconsumer,
- product.consumer.service.productconsumer
+ product.consumer.service.productconsumer,
+ supplier.consumer.service.supplierconsumer
 Bundle-ActivationPolicy: lazy

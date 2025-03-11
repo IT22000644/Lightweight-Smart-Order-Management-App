@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SupplierConsumer
+Bundle-SymbolicName: supplier.consumer.service.SupplierConsumer
+Bundle-Version: 1.0.0.qualifier
+Export-Package: supplier.consumer.service.supplierconsumer
+Bundle-Activator: supplier.consumer.service.supplierconsumer.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Automatic-Module-Name: supplier.consumer.service.SupplierConsumer
+Import-Package: org.osgi.framework;version="1.3.0",
+ supplier.producer.service.supplierproducer
+Bundle-ActivationPolicy: lazy
