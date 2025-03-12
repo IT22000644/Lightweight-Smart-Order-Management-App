@@ -23,9 +23,9 @@ public class Activator implements BundleActivator {
 			
 			Connection conn = dbConnectionService.getConnection();
 			
-			PaymentProducer orderProducer = new PaymentProducerImpl(conn);
+			PaymentProducer paymentProducer = new PaymentProducerImpl(conn);
 			
-			serviceRegistration = context.registerService(PaymentProducer.class, orderProducer, null);
+			serviceRegistration = context.registerService(PaymentProducer.class, paymentProducer, null);
 		} else {
 			System.out.println("DatabaseConnection service not found.");
 		}

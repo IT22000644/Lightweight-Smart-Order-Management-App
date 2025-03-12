@@ -5,7 +5,7 @@ Bundle-SymbolicName: order.producer.service.OrderProducer
 Bundle-Version: 1.0.0.qualifier
 Export-Package: order.producer.service.orderproducer
 Bundle-Activator: order.producer.service.orderproducer.Activator
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Automatic-Module-Name: order.producer.service.OrderProducer
 Import-Package: customer.producer.service.customerproducer,
  database.connector.service.databaseconnector,

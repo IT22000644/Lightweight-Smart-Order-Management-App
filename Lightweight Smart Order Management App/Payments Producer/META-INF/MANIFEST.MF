@@ -5,7 +5,7 @@ Bundle-SymbolicName: payment.producer.service.PaymentProducer
 Bundle-Version: 1.0.0.qualifier
 Export-Package: payment.producer.service.paymentproducer
 Bundle-Activator: payment.producer.service.paymentproducer.Activator
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Automatic-Module-Name: payment.producer.service.PaymentProducer
 Import-Package: database.connector.service.databaseconnector,
  org.osgi.framework;version="[1.10.0,2.0.0)"
