@@ -23,9 +23,9 @@ public class Activator implements BundleActivator {
 			
 			Connection conn = dbConnectionService.getConnection();
 			
-			CustomerProducer orderProducer = new CustomerProducerImpl(conn);
+			CustomerProducer customerProducer = new CustomerProducerImpl(conn);
 			
-			serviceRegistration = context.registerService(CustomerProducer.class, orderProducer, null);
+			serviceRegistration = context.registerService(CustomerProducer.class, customerProducer, null);
 		} else {
 			System.out.println("DatabaseConnection service not found.");
 		}
@@ -38,7 +38,7 @@ public class Activator implements BundleActivator {
 			serviceRegistration.unregister();                    
 		}                                                        
 		                                                         
-		System.out.println("Payment Consumer Bundle Stopped!");
+		System.out.println("Customer Consumer Bundle Stopped!");
 		
 	}
 
